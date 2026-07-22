@@ -1,0 +1,11 @@
+# CMake 编译目录
+build/
+build-*/
+
+# 编译产物
+*.o
+*.a
+*.exe
+
+# 编辑器配置
+.vscode/
