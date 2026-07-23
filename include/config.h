@@ -6,13 +6,21 @@
 typedef struct {
     int x;
     int y;
+} CleanPointConfig;
+
+typedef struct {
+    int x;
+    int y;
     Heading heading;
     DangerPoint danger_points[MAX_DANGER_POINTS];
     int danger_count;
+    CleanPointConfig clean_points[MAX_CLEAN_POINTS];
+    int clean_count;
 } Config;
 
 void config_default(Config *config);
 int config_add_danger_point(Config *config, int x, int y);
+int config_add_clean_point(Config *config, int x, int y);
 int config_init_executor(const Config *config, Executor *executor);
 
 #endif

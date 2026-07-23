@@ -7,6 +7,7 @@ extern "C" {
 #include <gtest/gtest.h>
 
 struct MoveCase {
+    // 每组数据描述一个朝向下，前进/后退3格后的预期坐标。
     Heading heading;
     int forward_x;
     int forward_y;
@@ -25,6 +26,7 @@ TEST_P(MoveTest, ForwardAndBackward)
     int y;
     Heading heading;
 
+    // 从同一坐标按参数指定的朝向前进3格。
     executor_init(&executor, 10, 20, test.heading);
     controller_forward_mile(&executor, 3);
     controller_get_position(&executor, &x, &y, &heading);
@@ -33,6 +35,7 @@ TEST_P(MoveTest, ForwardAndBackward)
     EXPECT_EQ(test.forward_y, y);
     EXPECT_EQ(test.heading, heading);
 
+    // 重新初始化，避免前进结果影响后退测试。
     executor_init(&executor, 10, 20, test.heading);
     controller_backward_mile(&executor, 3);
     controller_get_position(&executor, &x, &y, &heading);
@@ -45,6 +48,7 @@ TEST_P(MoveTest, ForwardAndBackward)
 INSTANTIATE_TEST_SUITE_P(
     FourHeadings,
     MoveTest,
+    // 一份测试逻辑覆盖北、东、南、西四种朝向。
     testing::Values(
         MoveCase{NORTH, 10, 23, 10, 17},
         MoveCase{EAST, 13, 20, 7, 20},
@@ -64,6 +68,7 @@ TEST(TurnRoundTest, TurnsToOppositeHeadingWithoutMoving)
         {WEST, EAST}
     };
 
+    // 逐一验证四种朝向掉头后的方向，并确认坐标不变。
     for (const TurnCase &test : cases) {
         Executor executor;
         int x;

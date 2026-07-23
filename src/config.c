@@ -6,6 +6,30 @@ void config_default(Config *config)
     config->y = 0;
     config->heading = NORTH;
     config->danger_count = 0;
+    config->clean_count = 0;
+}
+
+int config_add_clean_point(Config *config, int x, int y)
+{
+    int i;
+
+    if (config->x == x && config->y == y) {
+        return 0;
+    }
+    if (config->clean_count >= MAX_CLEAN_POINTS) {
+        return 0;
+    }
+    for (i = 0; i < config->clean_count; ++i) {
+        if (config->clean_points[i].x == x &&
+            config->clean_points[i].y == y) {
+            return 0;
+        }
+    }
+
+    config->clean_points[config->clean_count].x = x;
+    config->clean_points[config->clean_count].y = y;
+    ++config->clean_count;
+    return 1;
 }
 
 int config_add_danger_point(Config *config, int x, int y)
@@ -40,6 +64,13 @@ int config_init_executor(const Config *config, Executor *executor)
         if (!executor_add_danger_point(executor,
                                        config->danger_points[i].x,
                                        config->danger_points[i].y)) {
+            return 0;
+        }
+    }
+    for (i = 0; i < config->clean_count; ++i) {
+        if (!executor_add_clean_point(executor,
+                                      config->clean_points[i].x,
+                                      config->clean_points[i].y)) {
             return 0;
         }
     }

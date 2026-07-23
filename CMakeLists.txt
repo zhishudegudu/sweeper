@@ -10,6 +10,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(sweeper
     src/alert.c
+    src/clean.c
     src/config.c
     src/controller.c
     src/executor.c
@@ -28,7 +29,7 @@ target_link_libraries(sweeper_demo PRIVATE sweeper)
 enable_testing()
 add_subdirectory(thirdparty/googletest EXCLUDE_FROM_ALL)
 
-foreach(iteration RANGE 1 3)
+foreach(iteration RANGE 1 4)
     add_executable(test_iteration${iteration}
         test/test_iteration${iteration}.cpp
     )
